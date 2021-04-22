@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>MSTP and BISDN Linux</title>
+
+		<meta name="description" content="How to implement and extend STP functionality in BISDN Linux">
+		<meta name="author" content="Rubens Figueiredo">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>BISDN Linux and STP</h2>
+				</section>
+
+				<section>
+					<h2>Agenda</h2>
+					<p class="fragment">Current State</p>
+					<p class="fragment">Next Features</p>
+					<p class="fragment">Implementation Guide</p>
+				</section>
+
+				<section>
+					<h2>Introduction</h2>
+					<p>Spanning Tree Protocol (STP) is a protocol meant to build loop-less topologies in L2 networks.</p>
+					<img data-src="mypresentations/mstp/stp-topology.png">
+				</section>
+
+				<section>
+					<h2>Current State</h2>
+					BISDN Linux currently supports the following STP features:
+					<ul>
+						<li class="fragment">The Linux bridge Kernel driver has support for STP state</li>
+						<li class="fragment">OFDPA/ Broadcom SDK support setting the STP state on a port</li>
+						<li class="fragment">Port state modifications messages are picked up by baseboxd and the message is written to the switch</li>
+						<li class="fragment">We employ <a href="https://github.com/mstpd/mstpd">mstpd</a> to run RSTP on the switches.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Missing Features</h2>
+					<ul>
+						<li>PVSTP: Per-VLAN Spanning Tree Protocol</li>
+						<li>MSTP: Multiple Spanning Tree Protocol</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Next Features Overview</h2>
+					<h3>PVST</h3>
+					<ul>
+						<li>PVST is a Cisco protocol, that multiple devices support.</li>
+						<li>It expands on the concept of STP by introducing VLAN based Spanning Trees, which allow to create each tree based on different Broadcast domains.</li>
+						<li>Linux gained the feature to support Per-VLAN STP state in <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a580c76d534c7360ba68042b19cb255e8420e987"> Kernel 5.7</a></li>
+					<ul>
+				</section>
+
+				<section>
+					<section>
+						<h2>Next Features Overview</h2>
+						<h3>MSTP</h3>
+						<ul>
+							<li>Even if PVST expands on (R)STP to optimize building Spanning Trees, redundant links on a physical level can still be configured in ways that connect different VLANs in loops.</li>
+							<li>By grouping different VLANs into different Spanning Tree <b>Instances</b>, MSTP potentiates better link utilization across the network.</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Next Features Overview</h2>
+						<h3>MSTP</h3>
+						<img data-src="mypresentations/mstp/MSTP_config.png">
+
+						<p>MSTI: Multiple Spanning Tree Instance</p>
+						<p>While each MSTI can have multiple VLANs, each VLAN can be associated with only one MSTI</p>
+					</section>
+					<section>
+						<h2>Next Features Overview</h2>
+						<h3>MSTP</h3>
+						<img data-src="mypresentations/mstp/MST_Region.png" style="width: 20vw;" />
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Implementation Guide</h2>
+						<h3>baseboxd</h3>
+						
+						<p >baseboxd has to be aware of the new Kernel STP state.
+						<section>
+						  <pre><code data-trim data-noescape>
+# include/uapi/linux/if_bridge.h
+/* Bridge vlan RTM attributes
+ * [BRIDGE_VLANDB_ENTRY] = {
+ *     [BRIDGE_VLANDB_ENTRY_INFO]
+ *     ...
+ * }
+ */
+...
+
+enum {
+...
+	BRIDGE_VLANDB_ENTRY_STATE,
+	BRIDGE_VLANDB_ENTRY_TUNNEL_INFO,
+	BRIDGE_VLANDB_ENTRY_STATS,
+	__BRIDGE_VLANDB_ENTRY_MAX,
+};
+#define BRIDGE_VLANDB_ENTRY_MAX (__BRIDGE_VLANDB_ENTRY_MAX - 1)
+						  </code></pre>
+						</section>
+					</section>
+
+					<section>
+						<h2>Implementation Guide</h2>
+						<h3>OFDPA/SDK</h3>
+						
+						OFDPA/SDK implements STP Instances as Spanning Tree groups, and are configured as 
+						<pre><code data-trim data-noescape>
+calling ofdpaBcmCommand rpc with command = "stg help ".
+Usage (STG): Usages:
+	  stg create [<id>]            - Create a STG; optionally specify ID
+	  stg destroy <id>             - Destroy a STG
+	  stg show [<id>]              - List STG(s)
+	  stg add <id> <vlan_id> [...]     - Add VLAN(s) to a STG
+	  stg remove <id> <vlan_id> [...]  - Remove VLAN(s) from a STG
+	  stg stp                      - Get span tree state, all ports/STGs
+	  stg stp <id>                 - Get span tree state of ports in STG
+	  stg stp <id> <pbmp> <state>  - Set span tree state of ports in STG
+	                                 (disable/block/listen/learn/forward)
+	  stg default [<id>]           - Show or set the default STG
+						 </code></pre>
+					</section>
+
+					<section>
+						<h2>Implementation Guide</h2>
+						<h3>ofdpa-grpc</h3>
+						
+						<p>Our data model and ofdpa-grpc, already has function prototypes ready to implement Spanning Tree Groups.</p>
+						<pre><code data-trim data-noescape>
+#if 0
+  ofdpa::OfdpaStatus::OfdpaStatusCode ofdpaStgCreate();
+  ofdpa::OfdpaStatus::OfdpaStatusCode ofdpaStgDestroy();
+
+  ofdpa::OfdpaStatus::OfdpaStatusCode ofdpaStgVlanAdd();
+  ofdpa::OfdpaStatus::OfdpaStatusCode ofdpaStgVlanRemove();
+#endif
+						</code></pre>
+					</section>
+
+
+				</section>
+					<section>
+						<h2>Example Configuration on the ASIC</h2>
+						<pre><code data-trim data-noescape>
+Calling ofdpaBcmCommand rpc with command = "stg show ".
+Returned from ofdpaBcmCommand rpc with rc = 0.
+File logging started to /tmp/.drivshell-output
+STG 0: contains 0 VLANs
+  Disable: xe
+STG 1: contains 4092 VLANs (1-9,11,14-4095)
+  Forward: xe
+STG 10: contains 2 VLANs (10,4090)
+  Disable: xe0-xe8,xe10,xe13-xe53
+    Block: xe11
+    LEarn: xe12
+  Forward: xe9
+STG 12: contains 1 VLAN (12)
+  Disable: xe0-xe11,xe13-xe53
+  Forward: xe12
+STG 13: contains 1 VLAN (13)
+  Disable: xe1-xe53
+  Forward: xe0
+
+						</code></pre>
+					</section>
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Post-Lunch and Discussion: BISDN Research Topics</title>
+
+		<meta name="description" content="How to implement and extend STP functionality in BISDN Linux">
+		<meta name="author" content="Rubens Figueiredo">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+			<!-- Slide 1 {-->
+				<section>
+					<h3>Post-Breakfast and Discussion:</h3>
+					<h2>BISDN Research Topics</h2>
+				</section>
+			<!-- } Slide 1 -->
+
+			<!-- Slide 1 {-->
+				<section>
+					<h2>Agenda</h2>
+					<p class="fragment">Proposed Topics</p>
+					<p class="fragment">Personal Motivation</p>
+					<p class="fragment">Discussion</p>
+				</section>
+			<!-- } Slide 1 -->
+
+			<!-- Slide 1 {-->
+				<section>
+					<h2>Proposed Topics</h2>
+					<p class="fragment">P4 Compiler for Intel NICs</p>
+					<p class="fragment">Statistical/ ML analysis for NFV placement</p>
+				</section>
+				<section>
+					<!-- Slide 1 {-->
+					<section>
+						<h2>Proposed Topics</h2>
+						<h3>P4 Compiler for Intel NICs</h3>
+							<p>New generation Intel cards have programmable pipelines, currently in use in the BNG project</p>
+							<p>DDP allows for on the fly reconfiguration of the NIC</p>
+							<p>Dataplane configurability is a target of the P4 Language</p>
+					</section>
+					<!-- } Slide 1 -->
+					<!-- Slide 1 {-->
+					<section>
+						<h2>Proposed Topics</h2>
+						<h3>Statistical/ ML analysis for NFV placement</h3>
+							<p>SDN/NFV is (on academic circles at least) shaping Network Architecture design</p>
+							<p>NFV placement on the network is critical for optimized networks</p>
+							<p>Optimizing NFV placement is problematic due to the different targets</p>
+					</section>
+					<!-- } Slide 1 -->
+					<!-- Slide 1 {-->
+					<section>
+						<h2>Proposed Topics</h2>
+						<h3>Statistical/ ML analysis for NFV placement</h3>
+							<ul>
+								<li>Minimize energy consumption</li>
+								<li>QoS</li>
+								<li>Link utilization...</li>
+							</ul>
+					</section>
+					<!-- } Slide 1 -->
+				</section>
+			<!-- } Slide 1 -->
+
+			<!-- Slide 1 {-->
+				<section>
+					<!-- Slide 1 {-->
+					<section>
+						<h2>Personal Motivation</h2>
+						<p>Evolving requirements of the Internet with rising IoT, Smart cities, ...</p>
+						<p>What is the Environmental Impact of the growth?</p>
+						<p>How can DC/ large network operators sustainably design their networks?</p>
+						<p>Is it possible to sustainably scale?</p>
+					</section>
+					<!-- } Slide 1 -->
+					<!-- Slide 1 {-->
+					<section>
+						<h2>Personal Motivation</h2>
+						<p>What can we bring from research topics to real BISDN products?</p>
+						<p>Is the SDN model adapted to the Enterprise Use Case?</p>
+						<p>Is P4/Stratum a good replacement for existing architecture?</p>
+					</section>
+					<!-- } Slide 1 -->
+				</section>
+			<!-- } Slide 1 -->
+
+			<!-- Slide 1 {-->
+				<section>
+					<h3>Discussion</h3>
+				</section>
+			<!-- } Slide 1 -->
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>
