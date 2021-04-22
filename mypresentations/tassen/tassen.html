@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>TASSEN: A Unified API for Disagreggated BNGs</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="BISDN">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/custom.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+			<!-- Slide 1 {-->
+				<section>
+					<h2>TASSEN</h2>
+					<h3>Unified API for Disagreggated BNGs</h3>
+				</section>
+			<!-- } Slide 1 -->
+
+			<!-- Slide 2 {-->
+				<section>
+					<h2>Outline</h2>
+					<p>Project Overview</p>
+					<p>Whitepaper Proposal and Status</p>
+					<p>Discussion</p>
+				</section>
+			<!-- } Slide 2 -->
+
+			<!-- Slide 3 {-->
+      <section>
+        <section>
+          <h3>Project Overview</h3>
+          <h4>Problem Statement</h4>
+          <p class="fragment">PFCP is employed in Access networks for 5G (BNG extensions defined)</p>
+          <p class="fragment">P4 allows us to run a BNG pipeline, written once and deployed on different targets (DPDK, Tofino, Software)</p>
+          <p class="fragment">Run the BNG UP and CP using Whitebox Hardware and Open Software</p>
+
+        </section>
+
+        <section>
+          <h3>Project Overview</h3>
+          <h4>Problem Statement</h4>
+
+          <img data-src="images/tassen_simple.png">
+          </section>
+      </section>
+			<!-- } Slide 3 -->
+
+			<!-- Slide 4 {-->
+      <section>
+        <section>
+          <h3>Project Overview</h3>
+          <h4>Target Architectures: ONF P4 BNG</h4>
+          <img data-src="images/tassen_p4.png">
+        </section>
+
+        <section>
+          <h3>Project Overview</h3>
+          <h4>Target Architectures: BBF + TASSEN BNG</h4>
+
+          <img data-src="images/tassen_pfcp.png">
+          </section>
+
+        <section>
+          <h3>Project Overview</h3>
+          <h4>Target Architectures: BBF + TASSEN BNG</h4>
+
+          <div class="row">
+            <img class="ccolumn" style="max-width: 20%" data-src="images/tassen_pfcp.png">
+            <div class="ccolumn" style="text-align: right; padding-top: 5%; font-size: 70%" >
+              <li>Logical P4 Pipeline, bng.p4 (TASSEN) and P4SE</li>
+              <li>How to translate PFCP Matches/Actions</li>
+              <li>How to propagate PFCP QoS into DBNGU</li>
+            </div>
+          </section>
+      </section>
+			<!-- } Slide 4 -->
+
+			<!-- Slide 4 {-->
+				<section>
+				  <section>
+            <h3>Whitepaper Proposal and Status</h3>
+            <img style="max-width: 40%" data-src="images/tassen_toc.png">
+				  </section>
+
+          <section>
+            <h3>Whitepaper Proposal and Status</h3>
+            <p>We target end of June for the Whitepaper deadline</p>
+          </section>
+				</section>
+			<!-- } Slide 4 -->
+
+			<!-- Slide 5 {-->
+				<section>
+					<h2>Discussion</h2>
+          <p>What is the motivation for TASSEN and mapr?</p>
+			<!-- If the Target Pipeline must be written either way,
+        how does using TASSEN/mapr reduce complexity?
+      -->
+          <p>How to program the fixed set of QoS profiles?</p>
+          <p>When in the pipeline do we handle HQoS?</p>
+			<!-- CASWELL vs other Architectures
+      -->
+
+				</section>
+			<!-- } Slide 5 -->
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>
